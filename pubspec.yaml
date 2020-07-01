@@ -1,7 +1,6 @@
 name: apn_router
 description: A new Appnormal flutter package which provides a custom router with simple page routes.
-version: 0.0.1
-author:
+version: 1.0.0
 homepage:
 
 environment:
