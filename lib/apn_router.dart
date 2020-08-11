@@ -1,5 +1,6 @@
 library apn_router;
 
+import 'package:apn_router/sheet_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,12 +9,16 @@ class Router {
 
   static void pop<T>([T result]) => navigatorKey.currentState.pop<T>(result);
 
+  static Future<T> showModal<T>(BuildContext context, ModalPageRoute route) {
+    return route.show<T>(context);
+  }
+
   static Future<T> nav<T>(PageRoute route) => navigatorKey.currentState.pushNamed<T>(
         route.name,
         arguments: route,
       );
 
-  static Route<dynamic> generateRoute(RouteSettings settings) {
+  static Route<T> generateRoute<T>(RouteSettings settings) {
     final currentContext = navigatorKey.currentContext;
 
     if (settings.arguments is PageRoute) {
@@ -26,18 +31,18 @@ class Router {
   static Route<dynamic> _routeNotFound(String name) => MaterialPageRoute(builder: (_) => _routeNotFoundWidget(name));
 }
 
-abstract class PageRoute {
+abstract class PageRoute<T> {
   String get name => "/";
 
   Widget builder(BuildContext context);
 
-  Route<dynamic> route(BuildContext context) => MaterialPageRoute(
+  Route<T> route(BuildContext context) => MaterialPageRoute<T>(
         builder: builder,
         settings: RouteSettings(name: name),
       );
 }
 
-class SimplePageRoute extends PageRoute {
+class SimplePageRoute<T> extends PageRoute<T> {
   final String name;
   final Widget widget;
 
@@ -47,11 +52,11 @@ class SimplePageRoute extends PageRoute {
   Widget builder(BuildContext context) => widget;
 }
 
-class SimpleDialogRoute extends SimplePageRoute {
+class SimpleDialogRoute<T> extends SimplePageRoute<T> {
   SimpleDialogRoute(String name, Widget widget) : super(name, widget);
 
-  Route route(BuildContext context) {
-    return PageRouteBuilder(
+  Route<T> route(BuildContext context) {
+    return PageRouteBuilder<T>(
       opaque: false,
       settings: RouteSettings(name: name),
       barrierDismissible: true,
@@ -66,6 +71,31 @@ class SimpleDialogRoute extends SimplePageRoute {
           backgroundColor: Colors.black.withOpacity(0.3),
         );
       },
+    );
+  }
+}
+
+class ModalPageRoute {
+  final String name;
+  final Widget widget;
+  final Widget title;
+  final Widget action;
+  final bool isLocked;
+
+  ModalPageRoute(
+    this.name,
+    this.widget,
+    this.title, {
+    this.action, 
+    this.isLocked = false,
+  });
+
+  Future<T> show<T>(BuildContext context) {
+    return showSheetModal<T>(
+      context,
+      child: widget,
+      action: action,
+      title: title,
     );
   }
 }
