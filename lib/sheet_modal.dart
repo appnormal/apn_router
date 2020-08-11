@@ -5,16 +5,12 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class _SheetModal extends StatelessWidget {
   final Widget child;
-  final Widget title;
-  final Widget action;
-  final bool alignActionLeft;
+  final Widget header;
 
   const _SheetModal({
     Key key,
     @required this.child,
-    @required this.title,
-    this.alignActionLeft = false,
-    this.action,
+    @required this.header,
   }) : super(key: key);
 
   @override
@@ -28,11 +24,7 @@ class _SheetModal extends StatelessWidget {
             color: Colors.white,
             child: Column(
               children: <Widget>[
-                _SheetModalHeader(
-                  title: title,
-                  alignActionLeft: alignActionLeft,
-                  action: action,
-                ),
+                header,
                 Expanded(child: child)
               ],
             ),
@@ -43,16 +35,16 @@ class _SheetModal extends StatelessWidget {
   }
 }
 
-class _SheetModalHeader extends StatelessWidget {
+class SheetModalHeader extends StatelessWidget {
   final Widget title;
   final Widget action;
   final bool alignActionLeft;
 
-  const _SheetModalHeader({
+  const SheetModalHeader({
     Key key,
     this.title,
     this.action,
-    this.alignActionLeft,
+    this.alignActionLeft = false,
   }) : super(key: key);
 
   @override
@@ -64,45 +56,39 @@ class _SheetModalHeader extends StatelessWidget {
           Center(
             child: title,
           ),
-          Positioned(
-            right: alignActionLeft ? null : 0,
-            left: alignActionLeft ? 0 : null,
-            child: action,
-          )
+          if(action != null)
+            Positioned(
+              right: alignActionLeft ? null : 0,
+              left: alignActionLeft ? 0 : null,
+              child: action,
+            )
         ],
       ),
     );
   }
 }
 
-Future<T> showSheetModal<T>(
-  BuildContext context, {
+Future<T> showSheetModal<T>(BuildContext context, {
   Widget child,
-  Widget title,
-  Widget action,
-  bool alignActionLeft = false,
+  Widget header,
 }) async {
   final modalFuture = Platform.isIOS
       ? CupertinoScaffold.showCupertinoModalBottomSheet<T>(
-          context: context,
-          builder: (context, scrollController) {
-            return _SheetModal(
-              child: child,
-              title: title,
-              action: action,
-              alignActionLeft: alignActionLeft,
-            );
-          })
+      context: context,
+      builder: (context, scrollController) {
+        return _SheetModal(
+          child: child,
+          header: header,
+        );
+      })
       : showMaterialModalBottomSheet<T>(
-          context: context,
-          builder: (context, scrollController) {
-            return _SheetModal(
-              child: child,
-              title: title,
-              action: action,
-              alignActionLeft: alignActionLeft,
-            );
-          });
+      context: context,
+      builder: (context, scrollController) {
+        return _SheetModal(
+          child: child,
+          header: header,
+        );
+      });
 
   return await modalFuture;
 }

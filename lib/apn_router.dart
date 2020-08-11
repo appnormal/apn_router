@@ -13,7 +13,8 @@ class Router {
     return route.show<T>(context);
   }
 
-  static Future<T> nav<T>(PageRoute route) => navigatorKey.currentState.pushNamed<T>(
+  static Future<T> nav<T>(PageRoute route) =>
+      navigatorKey.currentState.pushNamed<T>(
         route.name,
         arguments: route,
       );
@@ -36,7 +37,8 @@ abstract class PageRoute<T> {
 
   Widget builder(BuildContext context);
 
-  Route<T> route(BuildContext context) => MaterialPageRoute<T>(
+  Route<T> route(BuildContext context) =>
+      MaterialPageRoute<T>(
         builder: builder,
         settings: RouteSettings(name: name),
       );
@@ -78,29 +80,23 @@ class SimpleDialogRoute<T> extends SimplePageRoute<T> {
 class ModalPageRoute {
   final String name;
   final Widget widget;
-  final Widget title;
-  final Widget action;
-  final bool isLocked;
+  final Widget header;
 
-  ModalPageRoute(
-    this.name,
-    this.widget,
-    this.title, {
-    this.action, 
-    this.isLocked = false,
-  });
+  ModalPageRoute(this.name,
+      this.widget,
+      this.header,);
 
   Future<T> show<T>(BuildContext context) {
     return showSheetModal<T>(
       context,
       child: widget,
-      action: action,
-      title: title,
+      header: header,
     );
   }
 }
 
-Widget _routeNotFoundWidget(String name) => Scaffold(
+Widget _routeNotFoundWidget(String name) =>
+    Scaffold(
       appBar: AppBar(), //To be able to go back
       body: Center(
         child: Text(

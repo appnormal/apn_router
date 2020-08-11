@@ -1,3 +1,8 @@
+## [1.1.1] - 11 August 2020
+
+* Fixed but in modal popup sheet header
+* Better support for custom headers
+
 ## [1.1.0] - 11 August 2020
 
 * Fixed awaiting returns on routes
