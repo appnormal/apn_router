@@ -1,3 +1,7 @@
+## [1.1.2] - 17 August 2020
+
+* Added 'enableDrag' property to showSheet
+
 ## [1.1.1] - 11 August 2020
 
 * Fixed but in modal popup sheet header
