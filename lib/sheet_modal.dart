@@ -23,10 +23,7 @@ class _SheetModal extends StatelessWidget {
           child: Material(
             color: Colors.white,
             child: Column(
-              children: <Widget>[
-                header,
-                Expanded(child: child)
-              ],
+              children: <Widget>[header, Expanded(child: child)],
             ),
           ),
         ),
@@ -56,7 +53,7 @@ class SheetModalHeader extends StatelessWidget {
           Center(
             child: title,
           ),
-          if(action != null)
+          if (action != null)
             Positioned(
               right: alignActionLeft ? null : 0,
               left: alignActionLeft ? 0 : null,
@@ -68,27 +65,31 @@ class SheetModalHeader extends StatelessWidget {
   }
 }
 
-Future<T> showSheetModal<T>(BuildContext context, {
+Future<T> showSheetModal<T>(
+  BuildContext context, {
   Widget child,
   Widget header,
+  bool enableDrag = true,
 }) async {
   final modalFuture = Platform.isIOS
       ? CupertinoScaffold.showCupertinoModalBottomSheet<T>(
-      context: context,
-      builder: (context, scrollController) {
-        return _SheetModal(
-          child: child,
-          header: header,
-        );
-      })
+          context: context,
+          enableDrag: enableDrag,
+          builder: (context, scrollController) {
+            return _SheetModal(
+              child: child,
+              header: header,
+            );
+          })
       : showMaterialModalBottomSheet<T>(
-      context: context,
-      builder: (context, scrollController) {
-        return _SheetModal(
-          child: child,
-          header: header,
-        );
-      });
+          context: context,
+          enableDrag: enableDrag,
+          builder: (context, scrollController) {
+            return _SheetModal(
+              child: child,
+              header: header,
+            );
+          });
 
   return await modalFuture;
 }
