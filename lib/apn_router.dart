@@ -11,12 +11,11 @@ class Router {
 
   static void popToRoot() => navigatorKey.currentState.popUntil((route) => route.isFirst);
 
-  static Future<T> showModal<T>(BuildContext context, ModalPageRoute route) {
-    return route.show<T>(context);
+  static Future<T> showModal<T>(BuildContext context, ModalPageRoute route, {bool enableDrag = true}) {
+    return route.show<T>(context, enableDrag: enableDrag);
   }
 
-  static Future<T> nav<T>(PageRoute route) =>
-      navigatorKey.currentState.pushNamed<T>(
+  static Future<T> nav<T>(PageRoute route) => navigatorKey.currentState.pushNamed<T>(
         route.name,
         arguments: route,
       );
@@ -39,8 +38,7 @@ abstract class PageRoute<T> {
 
   Widget builder(BuildContext context);
 
-  Route<T> route(BuildContext context) =>
-      MaterialPageRoute<T>(
+  Route<T> route(BuildContext context) => MaterialPageRoute<T>(
         builder: builder,
         settings: RouteSettings(name: name),
       );
@@ -84,21 +82,23 @@ class ModalPageRoute {
   final Widget widget;
   final Widget header;
 
-  ModalPageRoute(this.name,
-      this.widget,
-      this.header,);
+  ModalPageRoute(
+    this.name,
+    this.widget,
+    this.header,
+  );
 
-  Future<T> show<T>(BuildContext context) {
+  Future<T> show<T>(BuildContext context, {bool enableDrag = true}) {
     return showSheetModal<T>(
       context,
       child: widget,
       header: header,
+      enableDrag: enableDrag,
     );
   }
 }
 
-Widget _routeNotFoundWidget(String name) =>
-    Scaffold(
+Widget _routeNotFoundWidget(String name) => Scaffold(
       appBar: AppBar(), //To be able to go back
       body: Center(
         child: Text(

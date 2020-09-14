@@ -1,6 +1,10 @@
-## [1.1.2] - 14 September 2020
+## [1.1.3] - 14 September 2020
 
 * Add popToRoot function
+
+## [1.1.2] - 17 August 2020
+
+* Added 'enableDrag' property to showSheet
 
 ## [1.1.1] - 11 August 2020
 
