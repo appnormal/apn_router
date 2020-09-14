@@ -1,3 +1,7 @@
+## [1.1.2] - 14 September 2020
+
+* Add popToRoot function
+
 ## [1.1.1] - 11 August 2020
 
 * Fixed but in modal popup sheet header

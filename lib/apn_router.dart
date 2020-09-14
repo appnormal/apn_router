@@ -9,6 +9,8 @@ class Router {
 
   static void pop<T>([T result]) => navigatorKey.currentState.pop<T>(result);
 
+  static void popToRoot() => navigatorKey.currentState.popUntil((route) => route.isFirst);
+
   static Future<T> showModal<T>(BuildContext context, ModalPageRoute route) {
     return route.show<T>(context);
   }
