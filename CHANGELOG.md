@@ -1,7 +1,11 @@
 
+## [2.0.1] - 21 September 2020
+
+* Update external package to support Flutter 1.22.0-12.1.pre
+
 ## [2.0.0] - 21 September 2020
 
-* Support for Flutter 1.22
+* Support for Flutter 1.22.0-12.1.pre
 * Rename Router to Pilot to avoid naming clashes
 
 ## [1.1.3] - 14 September 2020

@@ -80,7 +80,7 @@ packages:
       name: modal_bottom_sheet
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0+1"
+    version: "0.2.1+1-dev"
   path:
     dependency: transitive
     description:

@@ -1,6 +1,6 @@
 name: apn_router
 description: A new Appnormal flutter package which provides a custom router with simple page routes.
-version: 2.0.0
+version: 2.0.1
 homepage: https://github.com/appnormal/apn_router
 
 environment:
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  modal_bottom_sheet: 0.2.0+1
+  modal_bottom_sheet: ^0.2.1+1-dev
 
 dev_dependencies:
   flutter_test:
