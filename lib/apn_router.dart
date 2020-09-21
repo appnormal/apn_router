@@ -4,7 +4,7 @@ import 'package:apn_router/sheet_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class Router {
+class Pilot {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static void pop<T>([T result]) => navigatorKey.currentState.pop<T>(result);
