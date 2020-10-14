@@ -77,21 +77,23 @@ class SimpleDialogRoute<T> extends SimplePageRoute<T> {
   }
 }
 
-class ModalPageRoute {
+class ModalPageRoute<T> {
   final String name;
   final Widget widget;
   final Widget header;
 
   ModalPageRoute(
     this.name,
-    this.widget,
+    this.widget, {
     this.header,
-  );
+  });
+
 
   Future<T> show<T>(BuildContext context, {bool enableDrag = true}) {
     return showSheetModal<T>(
       context,
-      child: widget,
+      child: header != null ? widget : null,
+      modal: widget,
       header: header,
       enableDrag: enableDrag,
     );

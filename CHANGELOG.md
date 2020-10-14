@@ -1,3 +1,6 @@
+## [2.0.2] - 14 October 2020
+
+* Add possibility of creating a modal header inside the page instead of passing it through a route. This gives the modal header access to state.
 
 ## [2.0.1] - 21 September 2020
 

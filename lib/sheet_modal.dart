@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class _SheetModal extends StatelessWidget {
+class SheetModal extends StatelessWidget {
   final Widget child;
   final Widget header;
 
-  const _SheetModal({
+  const SheetModal({
     Key key,
     @required this.child,
     @required this.header,
@@ -69,6 +69,7 @@ Future<T> showSheetModal<T>(
   BuildContext context, {
   Widget child,
   Widget header,
+  Widget modal,
   bool enableDrag = true,
 }) async {
   final modalFuture = Platform.isIOS
@@ -76,7 +77,8 @@ Future<T> showSheetModal<T>(
           context: context,
           enableDrag: enableDrag,
           builder: (context, scrollController) {
-            return _SheetModal(
+            if (modal != null && header == null) return modal;
+            return SheetModal(
               child: child,
               header: header,
             );
@@ -85,7 +87,8 @@ Future<T> showSheetModal<T>(
           context: context,
           enableDrag: enableDrag,
           builder: (context, scrollController) {
-            return _SheetModal(
+            if (modal != null && header == null) return modal;
+            return SheetModal(
               child: child,
               header: header,
             );
