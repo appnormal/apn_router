@@ -1,16 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class SheetModal extends StatelessWidget {
   final Widget child;
-  final Widget header;
+  final Widget? header;
 
   const SheetModal({
-    Key key,
-    @required this.child,
-    @required this.header,
+    Key? key,
+    required this.child,
+    required this.header,
   }) : super(key: key);
 
   @override
@@ -23,7 +24,10 @@ class SheetModal extends StatelessWidget {
           child: Material(
             color: Colors.white,
             child: Column(
-              children: <Widget>[header, Expanded(child: child)],
+              children: <Widget>[
+                if(header != null) header!,
+                Expanded(child: child),
+              ],
             ),
           ),
         ),
@@ -34,12 +38,12 @@ class SheetModal extends StatelessWidget {
 
 class SheetModalHeader extends StatelessWidget {
   final Widget title;
-  final Widget action;
+  final Widget? action;
   final bool alignActionLeft;
 
   const SheetModalHeader({
-    Key key,
-    this.title,
+    Key? key,
+    required this.title,
     this.action,
     this.alignActionLeft = false,
   }) : super(key: key);
@@ -57,7 +61,7 @@ class SheetModalHeader extends StatelessWidget {
             Positioned(
               right: alignActionLeft ? null : 0,
               left: alignActionLeft ? 0 : null,
-              child: action,
+              child: action!,
             )
         ],
       ),
@@ -65,19 +69,17 @@ class SheetModalHeader extends StatelessWidget {
   }
 }
 
-Future<T> showSheetModal<T>(
+Future<T?> showSheetModal<T>(
   BuildContext context, {
-  Widget child,
-  Widget header,
-  Widget modal,
+  required Widget child,
+  Widget? header,
   bool enableDrag = true,
 }) async {
   final modalFuture = Platform.isIOS
       ? CupertinoScaffold.showCupertinoModalBottomSheet<T>(
           context: context,
           enableDrag: enableDrag,
-          builder: (context, scrollController) {
-            if (modal != null && header == null) return modal;
+          builder: (context) {
             return SheetModal(
               child: child,
               header: header,
@@ -86,8 +88,7 @@ Future<T> showSheetModal<T>(
       : showMaterialModalBottomSheet<T>(
           context: context,
           enableDrag: enableDrag,
-          builder: (context, scrollController) {
-            if (modal != null && header == null) return modal;
+          builder: (context) {
             return SheetModal(
               child: child,
               header: header,

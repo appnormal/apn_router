@@ -7,15 +7,15 @@ import 'package:flutter/widgets.dart';
 class Pilot {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  static void pop<T>([T result]) => navigatorKey.currentState.pop<T>(result);
+  static void pop<T>([T? result]) => navigatorKey.currentState?.pop<T>(result);
 
-  static void popToRoot() => navigatorKey.currentState.popUntil((route) => route.isFirst);
+  static void popToRoot() => navigatorKey.currentState?.popUntil((route) => route.isFirst);
 
-  static Future<T> showModal<T>(BuildContext context, ModalPageRoute route, {bool enableDrag = true}) {
+  static Future<T?> showModal<T>(BuildContext context, ModalPageRoute route, {bool enableDrag = true}) {
     return route.show<T>(context, enableDrag: enableDrag);
   }
 
-  static Future<T> nav<T>(PageRoute route) => navigatorKey.currentState.pushNamed<T>(
+  static Future<T?>? nav<T>(PageRoute route) => navigatorKey.currentState?.pushNamed<T>(
         route.name,
         arguments: route,
       );
@@ -24,13 +24,14 @@ class Pilot {
     final currentContext = navigatorKey.currentContext;
 
     if (settings.arguments is PageRoute) {
-      return (settings.arguments as PageRoute).route(currentContext);
+      return (settings.arguments as PageRoute).route<T>(currentContext!);
     } else {
       return _routeNotFound(settings.name);
     }
   }
 
-  static Route<dynamic> _routeNotFound(String name) => MaterialPageRoute(builder: (_) => _routeNotFoundWidget(name));
+  static Route<T> _routeNotFound<T>(String? name) =>
+      MaterialPageRoute<T>(builder: (_) => _routeNotFoundWidget(name ?? '-'));
 }
 
 abstract class PageRoute<T> {
@@ -38,7 +39,7 @@ abstract class PageRoute<T> {
 
   Widget builder(BuildContext context);
 
-  Route<T> route(BuildContext context) => MaterialPageRoute<T>(
+  Route<T> route<T>(BuildContext context) => MaterialPageRoute<T>(
         builder: builder,
         settings: RouteSettings(name: name),
       );
@@ -57,7 +58,7 @@ class SimplePageRoute<T> extends PageRoute<T> {
 class SimpleDialogRoute<T> extends SimplePageRoute<T> {
   SimpleDialogRoute(String name, Widget widget) : super(name, widget);
 
-  Route<T> route(BuildContext context) {
+  Route<T> route<T>(BuildContext context) {
     return PageRouteBuilder<T>(
       opaque: false,
       settings: RouteSettings(name: name),
@@ -80,7 +81,7 @@ class SimpleDialogRoute<T> extends SimplePageRoute<T> {
 class ModalPageRoute<T> {
   final String name;
   final Widget widget;
-  final Widget header;
+  final Widget? header;
 
   ModalPageRoute(
     this.name,
@@ -88,12 +89,10 @@ class ModalPageRoute<T> {
     this.header,
   });
 
-
-  Future<T> show<T>(BuildContext context, {bool enableDrag = true}) {
+  Future<T?> show<T>(BuildContext context, {bool enableDrag = true}) {
     return showSheetModal<T>(
       context,
-      child: header != null ? widget : null,
-      modal: widget,
+      child: widget,
       header: header,
       enableDrag: enableDrag,
     );

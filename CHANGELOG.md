@@ -1,3 +1,9 @@
+## [3.0.0] - 10 April 2021
+
+* Drop support for modal without explicit header
+* Dart min sdk pinned to 2.12.0 (Null-safe)
+* Updated modal_bottom_sheet to version 2.0.0
+
 ## [2.0.2] - 14 October 2020
 
 * Add possibility of creating a modal header inside the page instead of passing it through a route. This gives the modal header access to state.
